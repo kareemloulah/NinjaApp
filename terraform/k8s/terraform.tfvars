@@ -1,0 +1,9 @@
+aws_region         = "us-east-1"
+project_name       = "vprofile-k8s"
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
+availability_zones = ["us-east-1a", "us-east-1b"]
+instance_type      = "t3.small"  # Minimum for K8s (2 vCPU, 2GB RAM) - free tier eligible
+trusted_ip_range   = "0.0.0.0/0"  # Allow all
+key_name           = "test2"
+ssh_key_path       = "~/Downloads/test2.pem"

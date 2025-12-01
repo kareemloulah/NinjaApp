@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      app-network:
+    depends_on:
+      - mysqldatabase
+      - memcahce
+      - rabbitmq
+
+  mysqldatabase:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      app-network:
+  memcahce:
+    image: memcached:trixie    
+    networks:
+      app-network:
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: test
+      RABBITMQ_DEFAULT_PASS: test
+    networks:
+      app-network:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    networks:
+      app-network:
+    ports:
+      - "80:80"
+    depends_on:
+      - app 
+    
+networks:
+  app-network:
+volumes:
+  mysqldata:
+  
