@@ -36,7 +36,7 @@ spec:
         stage('Build and Push Docker Image') {
             steps {
                 container('docker') {
-                    sh "docker build -t ${IMAGE_NAME}:${TAG} -t  ${IMAGE_NAME}:${LATEST_TAG}  -f ./app/Dockerfile ./app"
+                    sh "docker build -t ${IMAGE_NAME}:${TAG} -t  ${IMAGE_NAME}:${LATEST_TAG}  -f ./Application/app/Dockerfile ./app"
                     withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                         sh "echo ${docker_pass} | docker login -u ${docker_user} --password-stdin docker.io"
                         sh "docker push ${IMAGE_NAME}:${TAG}"
@@ -58,14 +58,14 @@ spec:
                     sh """
                     echo "Starting local smoke test..."
                     apk add --no-cache curl
+                    cd Application
                     docker compose up -d
 
                     echo "Waiting for container to come up..."
                     sleep 100
-
+                    
                     # HEALTH CHECK
                     curl http://localhost:80/login || (echo "Smoke test failed!" && exit 1)
-
                     echo "Smoke test passed!"
                     """
                 }

@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vprofile-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: vprofile-app
+  labels:
+    app: mysql-service
+spec:
+  clusterIP: None               # Headless service required for StatefulSet
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      name: mysql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: vprofile-app
+  labels:
+    app: mysql
+spec:
+  serviceName: mysql            # Must match the headless service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: mysql
+          image: mysql:8.4.7     # Replace with your pushed image
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root123"
+            - name: MYSQL_USER
+              value: "admin"
+            - name: MYSQL_PASSWORD
+              value: "admin123"
+            - name: MYSQL_DATABASE
+              value: "accounts"
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 3Gi
+        # storageClassName: ""   # <-- Uncomment if you need a specific storage class
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data
+spec:
+  # storageClassName: ""
+  accessModes: ["ReadWriteOnce"]
+  capacity:
+    storage: 3G
+  hostPath:
+    path: "/mnt/data"

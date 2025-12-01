@@ -1,18 +1,16 @@
 services:
-  app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
+  vprofile-svc:
+    image: loulah/vprofile
     ports:
       - "8080:8080"
     networks:
       app-network:
     depends_on:
-      - mysqldatabase
-      - memcahce
-      - rabbitmq
+      - mysql-service
+      - memcache-svc
+      - rabbitmq-svc
 
-  mysqldatabase:
+  mysql-service:
     build:
       context: ./mysql
       dockerfile: Dockerfile
@@ -20,19 +18,19 @@ services:
       - mysqldata:/var/lib/mysql
     networks:
       app-network:
-  memcahce:
+  memcache-svc:
     image: memcached:trixie    
     networks:
       app-network:
 
-  rabbitmq:
+  rabbitmq-svc:
     image: rabbitmq:management-alpine
     environment:
       RABBITMQ_DEFAULT_USER: test
       RABBITMQ_DEFAULT_PASS: test
     networks:
       app-network:
-  nginx:
+  nginx-svc:
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -41,7 +39,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - app 
+      - vprofile-svc
     
 networks:
   app-network:
