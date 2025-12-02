@@ -68,7 +68,7 @@ spec:
                     sh """
                     docker build -t ${IMAGE_NAME}:${TAG} \
                                  -t ${IMAGE_NAME}:${LATEST_TAG} \
-                                 -f ./app/Dockerfile ./app
+                                 -f ./Application/app/Dockerfile ./Application/app
                     """
 
                     withCredentials([usernamePassword(credentialsId: 'dockerlogin',
@@ -97,6 +97,7 @@ spec:
                     sh """
                     echo 'Starting local smoke test...'
                     apk add --no-cache curl
+                    cd Application/
                     docker compose up -d
 
                     echo 'Waiting for container to come up...'
