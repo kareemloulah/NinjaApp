@@ -19,6 +19,10 @@ spec:
       image: alpine/helm:3
       command: [cat]
       tty: true
+    - name: mcp/git
+          image: mcp/git:latest
+          command: ['sleep']
+          args: ['99d']
   volumes:
     - name: docker-graph-storage
       emptyDir: {}
@@ -38,12 +42,10 @@ spec:
     stages {
         stage("checkout code"){
             steps{
-                checkout scmGit(
-                    branches: [[name: 'main']], // Checkout the 'main' branch
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/kareemloulah/NinjaApp.git',
-                    ]]
-                )
+                container('docker') {
+                    sh "git clone https://github.com/kareemloulah/NinjaApp.git"
+                    }
+                }
             }
         }
         stage('Build and Push Docker Image') {
