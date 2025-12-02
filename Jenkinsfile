@@ -37,7 +37,8 @@ spec:
         IMAGE_NAME    = "loulah/vprofile"
         TAG           = "${BUILD_NUMBER}"
         LATEST_TAG    = "latest"
-        HELM_NAMESPACE = "production"
+        MONITOR_NAMESPACE = "monitoring"
+        APP_NAMESPACE = "vprofile"
     }
 
     options {
@@ -117,12 +118,11 @@ spec:
             }
         }
 
-        stage('Deploy with Helm') {
+        stage('Deploy monitoring with Helm') {
             steps {
                 container('helm') {
                     sh """
                     helm upgrade --install monitorstack ./Monitoring/helm/monitorstack/ \
-                    --set images.go.tag=${BUILD_NUMBER} \
                     --namespace $MONITOR_NAMESPACE \
                     --create-namespace --wait
                     """
@@ -130,18 +130,17 @@ spec:
             }
         }
 
-        // stage('Deploy with Helm') {
-        //     steps {
-        //         container('helm') {
-        //             sh """
-        //             helm upgrade --install my-app ./k8s/app-chart/ \
-        //             --set images.go.tag=${BUILD_NUMBER} \
-        //             --namespace $HELM_NAMESPACE \
-        //             --create-namespace --wait
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Deploy main application with Helm') {
+            steps {
+                container('helm') {
+                    sh """
+                    helm upgrade --install vprofile .kubernetes/helm/appstack/\
+                    --namespace $APP_NAMESPACE \
+                    --create-namespace --wait
+                    """
+                }
+            }
+        }
 
     }
 }
