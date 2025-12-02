@@ -99,6 +99,18 @@ spec:
 
         }
 
+        stage('Deploy main application with Helm') {
+            steps {
+                container('helm') {
+                    sh """
+                    helm upgrade --install vprofile ./kubernetes/helm/appstack/\
+                    --namespace $APP_NAMESPACE \
+                    --create-namespace
+                    """
+                }
+            }
+        }
+        
         stage('Deploy monitoring with Helm') {
             steps {
                 container('helm') {
@@ -111,17 +123,7 @@ spec:
             }
         }
 
-        stage('Deploy main application with Helm') {
-            steps {
-                container('helm') {
-                    sh """
-                    helm upgrade --install vprofile ./kubernetes/helm/appstack/\
-                    --namespace $APP_NAMESPACE \
-                    --create-namespace
-                    """
-                }
-            }
-        }
+
 
     }
 }
