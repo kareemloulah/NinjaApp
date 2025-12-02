@@ -83,13 +83,25 @@ metadata:
   name: prometheus-pvc
   namespace: {{ .Release.Namespace }}
 spec:
-  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
 
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data/prom
 ---
 
 apiVersion: v1
