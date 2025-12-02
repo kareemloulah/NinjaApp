@@ -31,8 +31,19 @@ spec:
         LATEST_TAG= "latest"
         HELM_NAMESPACE = "production"
     }
+    skipDefaultCheckout=true
 
     stages {
+        stage("checkout code"){
+            steps{
+                checkout scmGit(
+                    branches: [[name: 'main']], // Checkout the 'main' branch
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/kareemloulah/NinjaApp.git',
+                    ]]
+                )
+            }
+        }
         stage('Build and Push Docker Image') {
             steps {
                 container('docker') {
