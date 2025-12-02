@@ -123,7 +123,7 @@ spec:
                     sh """
                     helm upgrade --install monitorstack ./Monitoring/helm/monitorstack/ \
                     --namespace $MONITOR_NAMESPACE \
-                    --create-namespace --wait
+                    --create-namespace
                     """
                 }
             }
@@ -135,7 +135,7 @@ spec:
                     sh """
                     helm upgrade --install vprofile .kubernetes/helm/appstack/\
                     --namespace $APP_NAMESPACE \
-                    --create-namespace --wait
+                    --create-namespace
                     """
                 }
             }
