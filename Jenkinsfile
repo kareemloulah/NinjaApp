@@ -70,6 +70,9 @@ spec:
         }
 
         stage('Local Smoke Test (docker-compose)') {
+            when {
+                changeset "src/**"
+            }
             steps {
                 container('docker') {
                     sh """
