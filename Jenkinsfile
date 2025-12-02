@@ -8,7 +8,7 @@ kind: Pod
 spec:
   dnsPolicy: ClusterFirst
   dnsConfig:
-    nameservers: [8.8.8.8,1.1.1.1]
+    nameservers: [8.8.8.8,1.1.1.1,8.8.4.4]
   serviceAccountName: jenkins-admin
   containers:
     - name: docker
@@ -66,6 +66,9 @@ spec:
         }
 
         stage('Build and Push Docker Image') {
+            // when {
+            //     changeset "**/*"
+            // }
             steps {
                 container('docker') {
                     sh """
@@ -78,7 +81,7 @@ spec:
                                                       passwordVariable: 'docker_pass',
                                                       usernameVariable: 'docker_user')]) {
                         sh """
-                        echo ${docker_pass} | docker login -u ${docker_user} --password-stdin docker.io
+                        echo ${docker_pass} | docker login -u ${docker_user} --password-stdin https://index.docker.io/v1/
                         docker push ${IMAGE_NAME}:${TAG}
                         docker push ${IMAGE_NAME}:${LATEST_TAG}
                         """
