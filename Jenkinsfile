@@ -81,7 +81,7 @@ spec:
                                                       passwordVariable: 'docker_pass',
                                                       usernameVariable: 'docker_user')]) {
                         sh """
-                        echo ${docker_pass} | docker login -u ${docker_user} --password-stdin https://index.docker.io/v1/
+                        echo ${docker_pass} | docker login -u ${docker_user} --password-stdin 
                         docker push ${IMAGE_NAME}:${TAG}
                         docker push ${IMAGE_NAME}:${LATEST_TAG}
                         """
