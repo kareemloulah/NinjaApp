@@ -19,7 +19,7 @@ spec:
       image: alpine/helm:3
       command: [cat]
       tty: true
-    - name: mcp/git
+    - name: git
           image: mcp/git:latest
           command: ['sleep']
           args: ['99d']
@@ -42,7 +42,7 @@ spec:
     stages {
         stage("checkout code"){
             steps{
-                container('docker') {
+                container('git') {
                     sh "git clone https://github.com/kareemloulah/NinjaApp.git"
                     }
                 }
