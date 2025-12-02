@@ -137,7 +137,7 @@ spec:
             steps {
                 container('helm') {
                     sh """
-                    helm upgrade --install vprofile .kubernetes/helm/appstack/\
+                    helm upgrade --install vprofile ./kubernetes/helm/appstack/\
                     --namespace $APP_NAMESPACE \
                     --create-namespace
                     """
