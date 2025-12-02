@@ -88,7 +88,20 @@ spec:
   resources:
     requests:
       storage: 2Gi
-
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /mnt/data/prom
 ---
 
 apiVersion: v1
