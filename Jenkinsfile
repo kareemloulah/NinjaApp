@@ -48,14 +48,16 @@ spec:
 
         stage("Checkout Code") {
             steps {
-                container('git') {
-                    git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
-                    sh "ls -la"
-                    // sh """
-                    // git clone https://github.com/kareemloulah/NinjaApp.git
-                    // ls -la
-                    // """
-                }
+                git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
+
+                // container('git') {
+                //     git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
+                //     sh "ls -la"
+                //     // sh """
+                //     // git clone https://github.com/kareemloulah/NinjaApp.git
+                //     // ls -la
+                //     // """
+                // }
             }
         }
 
