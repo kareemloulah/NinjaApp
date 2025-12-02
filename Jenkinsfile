@@ -66,7 +66,6 @@ spec:
             steps {
                 container('docker') {
                     sh """
-                    cd NinjaApp/Application
                     docker build -t ${IMAGE_NAME}:${TAG} \
                                  -t ${IMAGE_NAME}:${LATEST_TAG} \
                                  -f ./app/Dockerfile ./app
@@ -98,7 +97,6 @@ spec:
                     sh """
                     echo 'Starting local smoke test...'
                     apk add --no-cache curl
-                    cd NinjaApp/Application
                     docker compose up -d
 
                     echo 'Waiting for container to come up...'
