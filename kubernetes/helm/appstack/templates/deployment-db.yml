@@ -69,7 +69,7 @@ spec:
   storageClassName: manual
   accessModes: ["ReadWriteOnce"]
   capacity:
-    storage: 3G
+    storage: 3Gi
   hostPath:
     path: "/mnt/data/mysql-data"
 
