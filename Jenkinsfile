@@ -6,6 +6,9 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
+  dnsPolicy: ClusterFirst
+  dnsConfig:
+    nameservers: [8.8.8.8,1.1.1.1]
   serviceAccountName: jenkins-admin
   containers:
     - name: docker
