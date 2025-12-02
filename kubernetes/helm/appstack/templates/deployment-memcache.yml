@@ -1,0 +1,45 @@
+
+# -------------------------------
+# memcache (Maven)
+# -------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-memcache
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memcache-dep-pod
+  template:
+    metadata:
+      labels:
+        app: memcache-dep-pod
+    spec:
+      containers:
+        - name: memcache
+          image: {{ .Values.images.mem.name }}:{{ .Values.images.mem.tag }} # memcached:trixie # <-- replace with your Flask memcache image
+          ports:
+            - containerPort: 11211
+          resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-memcache-svc
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: memcache-dep-pod
+  ports:
+    - port: 11211
+      targetPort: 11211

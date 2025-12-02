@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service
-  namespace: vprofile-app
+  name: {{ .Release.Name }}-mysql-svc
+  namespace: {{ .Release.Namespace }}
   labels:
     app: mysql-service
 spec:
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  namespace: vprofile-app
+  namespace: {{ .Release.Namespace }}
   labels:
     app: mysql
 spec:
@@ -34,7 +34,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: mysql
-          image: mysql:8.4.7     # Replace with your pushed image
+          image: {{ .Values.images.db.name }}:{{ .Values.images.db.tag }} # mysql:8.4.7     # Replace with your pushed image
           imagePullPolicy: IfNotPresent
           env:
             - name: MYSQL_ROOT_PASSWORD
@@ -79,14 +79,14 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: seed-database
-  namespace: vprofile-app
+  namespace: {{ .Release.Namespace }}
 spec:
   template:
     spec:
       containers:
       - name: seeder
         image: mysql:8
-        command: ["sh", "-c", "mysql -h mysql-service.vprofile-app.svc.cluster.local -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
+        command: ["sh", "-c", "mysql -h {{.Release.Name }}-mysql-svc.{{.Release.Namespace}}.svc.cluster.local -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
         env:
         - name: MYSQL_PASSWORD
           value: admin123
@@ -104,7 +104,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: backup
-  namespace: vprofile-app
+  namespace: {{ .Release.Namespace }}
 data:
   backup.sql: |
     USE accounts;

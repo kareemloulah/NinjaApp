@@ -117,6 +117,19 @@ spec:
             }
         }
 
+        stage('Deploy with Helm') {
+            steps {
+                container('helm') {
+                    sh """
+                    helm upgrade --install monitorstack ./Monitoring/helm/monitorstack/ \
+                    --set images.go.tag=${BUILD_NUMBER} \
+                    --namespace $MONITOR_NAMESPACE \
+                    --create-namespace --wait
+                    """
+                }
+            }
+        }
+
         // stage('Deploy with Helm') {
         //     steps {
         //         container('helm') {

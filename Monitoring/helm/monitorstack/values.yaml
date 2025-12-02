@@ -1,0 +1,11 @@
+images:
+  prom:
+    name: prom/prometheus
+    tag: v3.5.0
+  grafana:
+    name: grafana/grafana
+    tag: 11.1.4
+  exporter:
+    name: prom/node-exporter
+    tag: v1.10.2
+    

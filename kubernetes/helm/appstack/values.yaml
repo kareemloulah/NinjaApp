@@ -1,0 +1,13 @@
+images:
+  rabbit:
+    name: rabbitmq
+    tag: management-alpine
+  mem:
+    name: memcached
+    tag: latest 
+  vp:
+    name: loulah/vprofile
+    tag: latest 
+  db:
+    name: mysql
+    tag: 8.4.7

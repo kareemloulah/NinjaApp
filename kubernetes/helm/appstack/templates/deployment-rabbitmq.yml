@@ -1,0 +1,51 @@
+
+# -------------------------------
+# rabbitmq (Maven)
+# -------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-rabbitmq
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rabbitmq-dep-pod
+  template:
+    metadata: 
+      labels:
+        app: rabbitmq-dep-pod
+    spec:
+      containers:
+        - name: rabbitmq
+          image: {{ .Values.images.rabbit.name }}:{{ .Values.images.rabbit.tag }} # rabbitmq:management-alpine # <-- replace with your Flask rabbitmq image
+          ports:
+            - containerPort: 5672
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: test
+            - name: RABBITMQ_DEFAULT_PASS
+              value: test
+          resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-rabbitmq-svc
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq-dep-pod
+  ports:
+    - port: 5672
+      targetPort: 5672
