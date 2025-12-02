@@ -55,21 +55,11 @@ spec:
     - metadata:
         name: mysql-data
       spec:
+        storageClassName: local-path
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 3Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-data
-spec:
-  accessModes: ["ReadWriteOnce"]
-  capacity:
-    storage: 3Gi
-  hostPath:
-    path: "/mnt/data/mysql-data"
 
 ---
 
@@ -84,7 +74,7 @@ spec:
       containers:
       - name: seeder
         image: mysql:8
-        command: ["sh", "-c", "mysql -h {{.Release.Name}}-mysql-svc.{{.Release.Namespace}} -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
+        command: ["sh", "-c", "mysql -h {{.Release.Name}}-mysql-svc -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
         env:
         - name: MYSQL_PASSWORD
           value: admin123
