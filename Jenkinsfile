@@ -31,7 +31,9 @@ spec:
         LATEST_TAG= "latest"
         HELM_NAMESPACE = "production"
     }
-    skipDefaultCheckout=true
+    options {
+            skipDefaultCheckout() // Skips default checkout for the entire pipeline
+        }
 
     stages {
         stage("checkout code"){
