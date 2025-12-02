@@ -42,21 +42,11 @@ spec:
         APP_NAMESPACE = "vprofile"
     }
 
-    options {
-        skipDefaultCheckout()
-    }
-
     stages {
-
-        stage("Checkout Code") {
-            steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/kareemloulah/NinjaApp.git'
-            }
-        }
 
         stage('Build and Push Docker Image') {
             when {
-                changeset "**/*"
+                changeset "src/**"
             }
             steps {
                 container('docker') {
@@ -89,7 +79,7 @@ spec:
                     docker compose up -d
 
                     echo 'Waiting for container to come up...'
-                    sleep 100
+                    sleep 60
 
                     curl http://localhost:80/login || (echo 'Smoke test failed!' && exit 1)
                     echo 'Smoke test passed!'
@@ -110,7 +100,7 @@ spec:
                 }
             }
         }
-        
+
         stage('Deploy monitoring with Helm') {
             steps {
                 container('helm') {
