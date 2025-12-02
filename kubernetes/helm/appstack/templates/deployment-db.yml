@@ -86,7 +86,7 @@ spec:
       containers:
       - name: seeder
         image: mysql:8
-        command: ["sh", "-c", "mysql -h {{.Release.Name}}-mysql-svc.{{.Release.Namespace}}.svc.cluster.local -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
+        command: ["sh", "-c", "mysql -h {{.Release.Name}}-mysql-svc.{{.Release.Namespace}} -u admin -p$MYSQL_PASSWORD < /seeds/backup.sql"]
         env:
         - name: MYSQL_PASSWORD
           value: admin123
