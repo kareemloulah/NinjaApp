@@ -41,26 +41,26 @@ spec:
         APP_NAMESPACE = "vprofile"
     }
 
-    options {
-        skipDefaultCheckout()
-    }
+    // options {
+    //     skipDefaultCheckout()
+    // }
 
     stages {
 
-        stage("Checkout Code") {
-            steps {
-                git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
+        // stage("Checkout Code") {
+        //     steps {
+        //         git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
 
-                // container('git') {
-                //     git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
-                //     sh "ls -la"
-                //     // sh """
-                //     // git clone https://github.com/kareemloulah/NinjaApp.git
-                //     // ls -la
-                //     // """
-                // }
-            }
-        }
+        //         // container('git') {
+        //         //     git branch: 'main', url: 'https://github.com/kareemloulah/NinjaApp.git'
+        //         //     sh "ls -la"
+        //         //     // sh """
+        //         //     // git clone https://github.com/kareemloulah/NinjaApp.git
+        //         //     // ls -la
+        //         //     // """
+        //         // }
+        //     }
+        // }
 
         stage('Build and Push Docker Image') {
             steps {
