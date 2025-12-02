@@ -6,18 +6,13 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
-  dnsPolicy: ClusterFirst
-  dnsConfig:
-    nameservers: [8.8.8.8,1.1.1.1,8.8.4.4]
+  dnsPolicy: Default
   serviceAccountName: jenkins-admin
   containers:
     - name: docker
       image: docker:25-dind
       securityContext:
         privileged: true
-      env:
-        - name: DOCKER_OPTS
-          value: "--dns 8.8.8.8 --dns 1.1.1.1 --dns 8.8.4.4"
       volumeMounts:
         - name: docker-graph-storage
           mountPath: /var/lib/docker
