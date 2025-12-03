@@ -32,8 +32,7 @@ spec:
         IMAGE_NAME    = "loulah/vprofile"
         TAG           = "${BUILD_NUMBER}"
         LATEST_TAG    = "latest"
-        MONITOR_NAMESPACE = "monitoring"
-        APP_NAMESPACE = "vprofile"
+        APP_NAMESPACE = "vprofile-app"
     }
 
     stages {
@@ -97,20 +96,5 @@ spec:
                 }
             }
         }
-
-        stage('Deploy monitoring with Helm') {
-            steps {
-                container('helm') {
-                    sh """
-                    helm upgrade --install monitorstack ./Monitoring/helm/monitorstack/ \
-                    --namespace $MONITOR_NAMESPACE \
-                    --create-namespace
-                    """
-                }
-            }
-        }
-
-
-
     }
 }
