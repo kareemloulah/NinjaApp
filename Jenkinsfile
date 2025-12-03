@@ -21,12 +21,6 @@ spec:
       image: alpine/helm:3
       command: [ "cat" ]
       tty: true
-
-    - name: git
-      image: mcp/git:latest
-      command: [ "sleep" ]
-      args: [ "99d" ]
-
   volumes:
     - name: docker-graph-storage
       emptyDir: {}

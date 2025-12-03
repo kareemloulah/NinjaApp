@@ -53,24 +53,15 @@ spec:
               mountPath: /var/lib/mysql
   volumeClaimTemplates:
     - metadata:
-        name: mysql-data
+        name: prometheus-pvc
+        namespace: {{.Release.Namespace}}
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn
         resources:
           requests:
-            storage: 3Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-data
-spec:
-  accessModes: ["ReadWriteOnce"]
-  capacity:
-    storage: 3Gi
-  hostPath:
-    path: "/mnt/data/mysql-data"
-
+            storage: 5Gi
 ---
 
 apiVersion: batch/v1

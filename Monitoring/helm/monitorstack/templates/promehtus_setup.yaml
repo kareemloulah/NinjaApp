@@ -76,32 +76,18 @@ spec:
             claimName: prometheus-pvc
 
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prometheus-pvc
-  namespace: {{ .Release.Namespace }}
+  namespace: {{.Release.Namespace}}
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: longhorn
   resources:
     requests:
-      storage: 3Gi
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: prometheus-pv
-spec:
-  capacity:
-    storage: 3Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  hostPath:
-    path: /mnt/data/prom
+      storage: 2Gi
 ---
 
 apiVersion: v1

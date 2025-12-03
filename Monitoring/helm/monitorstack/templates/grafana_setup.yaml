@@ -42,32 +42,18 @@ spec:
             claimName: grafana-pvc
 
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: grafana-pvc
-  namespace: {{ .Release.Namespace }}
+  name: ggrafanaf-pvc
+  namespace: {{.Release.Namespace}}
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: longhorn
   resources:
     requests:
       storage: 2Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: grafana-pv
-spec:
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  hostPath:
-    path: /mnt/data/grafana
-
 ---
 
 apiVersion: v1
