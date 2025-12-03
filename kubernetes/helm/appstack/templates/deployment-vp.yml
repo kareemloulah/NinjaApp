@@ -53,7 +53,7 @@ metadata:
   name: app-config
   namespace: {{.Release.Namespace}}
 data:
-  JDBC_URL: jdbc:mysql://{{.Release.Name}}-mysql-svc:3306/accounts
-  MEMCACHED_ACTIVE_HOST: {{ .Release.Name }}-memcache-svc
-  MEMCACHED_STANDBY_HOST: {{ .Release.Name }}-memcache-svc
-  RABBITMQ_ADDRESS: {{ .Release.Name }}-rabbitmq-svc
+  JDBC_URL: jdbc:mysql://{{.Release.Name}}-mysql-svc.{{.Release.Namespace}}.svc.cluster.local:3306/accounts
+  MEMCACHED_ACTIVE_HOST: {{ .Release.Name }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
+  MEMCACHED_STANDBY_HOST: {{ .Release.Name }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
+  RABBITMQ_ADDRESS: {{ .Release.Name }}-rabbitmq-svc.{{.Release.Namespace}}.svc.cluster.local

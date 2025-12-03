@@ -87,7 +87,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 3Gi
 
 ---
 apiVersion: v1
@@ -96,10 +96,10 @@ metadata:
   name: prometheus-pv
 spec:
   capacity:
-    storage: 2Gi
+    storage: 3Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   hostPath:
     path: /mnt/data/prom
 ---
