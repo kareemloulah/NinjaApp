@@ -54,38 +54,18 @@ spec:
             - containerPort: 9090
           resources:
               requests:
-                memory: "1000Mi"
-                cpu: "1000m"
+                memory: "300Mi"
+                cpu: "300m"
               limits:
-                memory: "1000Mi"
-                cpu: "2000m"
+                memory: "500Mi"
+                cpu: "500m"
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus
-          #   - name: prometheus-storage
-          #     mountPath: /prometheus
       volumes:
         - name: prometheus-config-volume
           configMap:
             name: prometheus-config
-        # - name: prometheus-storage
-        #   persistentVolumeClaim:
-        #     claimName: prometheus-pvc
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: prometheus-pvc
-#   namespace: {{.Release.Namespace}}
-# spec:
-#   storageClassName: fast-ssd
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 10Gi
-# ---
 
 ---
 
@@ -130,6 +110,10 @@ rules:
 
   - nonResourceURLs:
       - /metrics
+      - /metrics/cadvisor
+      - /metrics/probes
+      - /metrics/resource
+      - /healthz
     verbs:
       - get
 
