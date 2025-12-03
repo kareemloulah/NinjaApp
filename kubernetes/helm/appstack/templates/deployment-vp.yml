@@ -24,9 +24,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-config
-          resources:
-              requests:
-                memory: "1Gi"
 
 ---
 apiVersion: v1
