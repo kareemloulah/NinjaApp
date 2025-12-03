@@ -38,9 +38,6 @@ spec:
     stages {
 
         stage('Build and Push Docker Image') {
-            when {
-                changeset "src/**"
-            }
             steps {
                 container('docker') {
                     sh """
@@ -63,9 +60,6 @@ spec:
         }
 
         stage('Local Smoke Test (docker-compose)') {
-            when {
-                changeset "src/**"
-            }
             steps {
                 container('docker') {
                     sh """
