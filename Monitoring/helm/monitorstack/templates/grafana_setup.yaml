@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-grafana  ## Name of deployment
+  name: {{ .Release.Namespace }}-grafana  ## Name of deployment
   namespace: {{ .Release.Namespace }} # namespace for the depoyment
 spec:
   replicas: 1
@@ -26,9 +26,9 @@ spec:
               value: admin
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: admin
-          volumeMounts:
-            - name: grafana-storage
-              mountPath: /var/lib/grafana
+          # volumeMounts:
+          #   - name: grafana-storage
+          #     mountPath: /var/lib/grafana
           resources:
               requests:
                 memory: "64Mi"
@@ -36,30 +36,30 @@ spec:
               limits:
                 memory: "128Mi"
                 cpu: "500m"
-      volumes:
-        - name: grafana-storage
-          persistentVolumeClaim:
-            claimName: grafana-pvc
+#       volumes:
+#         - name: grafana-storage
+#           persistentVolumeClaim:
+#             claimName: grafana-pvc
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: grafana-pvc
-  namespace: {{.Release.Namespace}}
-spec:
-  storageClassName: fast-ssd
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: grafana-pvc
+#   namespace: {{.Release.Namespace}}
+# spec:
+#   storageClassName: fast-ssd
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 10Gi
+# ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-grafana-svc
+  name: {{ .Release.Namespace }}-grafana-svc
   namespace: {{ .Release.Namespace }}
 spec:
   type: NodePort

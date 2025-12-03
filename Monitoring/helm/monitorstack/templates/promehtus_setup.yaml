@@ -55,8 +55,8 @@ spec:
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus
-            - name: prometheus-storage
-              mountPath: /prometheus
+          #   - name: prometheus-storage
+          #     mountPath: /prometheus
           resources:
               requests:
                 memory: "64Mi"
@@ -68,29 +68,29 @@ spec:
         - name: prometheus-config-volume
           configMap:
             name: prometheus-config
-        - name: prometheus-storage
-          persistentVolumeClaim:
-            claimName: prometheus-pvc
+#         - name: prometheus-storage
+#           persistentVolumeClaim:
+#             claimName: prometheus-pvc
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: prometheus-pvc
-  namespace: {{.Release.Namespace}}
-spec:
-  storageClassName: fast-ssd
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: prometheus-pvc
+#   namespace: {{.Release.Namespace}}
+# spec:
+#   storageClassName: fast-ssd
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 10Gi
+# ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-prometheus-svc
+  name: {{ .Release.Namespace }}-prometheus-svc
   namespace: {{ .Release.Namespace }}
 spec:
   type: NodePort

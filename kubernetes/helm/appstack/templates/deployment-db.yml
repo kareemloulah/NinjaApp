@@ -47,7 +47,6 @@ spec:
               value: "accounts"
           ports:
             - containerPort: 3306
-              name: mysql
   #         volumeMounts:
   #           - name: mysql-data
   #             mountPath: /var/lib/mysql
