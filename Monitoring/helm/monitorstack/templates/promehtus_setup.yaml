@@ -44,7 +44,7 @@ spec:
       labels:
         app: prometheus-dep-pod
     spec:
-      serviceAccountName: prometheus
+      serviceAccountName: prometheus-sa
       containers:
         - name: prometheus
           image: {{ .Values.images.prom.name }}:{{ .Values.images.prom.tag }} # prom/prometheus:v3.5.0
@@ -52,11 +52,6 @@ spec:
             - "--config.file=/etc/prometheus/prometheus.yml"
           ports:
             - containerPort: 9090
-          volumeMounts:
-            - name: prometheus-config-volume
-              mountPath: /etc/prometheus
-          #   - name: prometheus-storage
-          #     mountPath: /prometheus
           resources:
               requests:
                 memory: "1000Mi"
@@ -64,13 +59,18 @@ spec:
               limits:
                 memory: "1000Mi"
                 cpu: "2000m"
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus
+          #   - name: prometheus-storage
+          #     mountPath: /prometheus
       volumes:
         - name: prometheus-config-volume
           configMap:
             name: prometheus-config
-#         - name: prometheus-storage
-#           persistentVolumeClaim:
-#             claimName: prometheus-pvc
+        # - name: prometheus-storage
+        #   persistentVolumeClaim:
+        #     claimName: prometheus-pvc
 
 # ---
 # apiVersion: v1
