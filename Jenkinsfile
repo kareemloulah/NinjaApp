@@ -32,7 +32,7 @@ spec:
         IMAGE_NAME    = "loulah/vprofile"
         TAG           = "${BUILD_NUMBER}"
         LATEST_TAG    = "latest"
-        APP_NAMESPACE = "vprofile-app"
+        APP_NAMESPACE = "vprofile"
     }
 
     stages {
