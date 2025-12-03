@@ -26,11 +26,7 @@ spec:
                 name: app-config
           resources:
               requests:
-                memory: "2Gi"
-                cpu: "2Gi"
-              limits:
-                memory: "2Gi"
-                cpu: "2Gi"
+                memory: "1Gi"
 
 ---
 apiVersion: v1
