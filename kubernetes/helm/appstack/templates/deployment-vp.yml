@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-vprofile
+  name: {{ .Release.Namespace }}-vprofile
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-vprofile-svc
+  name: {{ .Release.Namespace }}-vprofile-svc
   namespace: {{ .Release.Namespace }}
 spec:
   type: NodePort
@@ -54,6 +54,6 @@ metadata:
   namespace: {{.Release.Namespace}}
 data:
   JDBC_URL: jdbc:mysql://{{.Release.Name}}-mysql-svc.{{.Release.Namespace}}.svc.cluster.local:3306/accounts
-  MEMCACHED_ACTIVE_HOST: {{ .Release.Name }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
-  MEMCACHED_STANDBY_HOST: {{ .Release.Name }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
-  RABBITMQ_ADDRESS: {{ .Release.Name }}-rabbitmq-svc.{{.Release.Namespace}}.svc.cluster.local
+  MEMCACHED_ACTIVE_HOST: {{ .Release.Namespace }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
+  MEMCACHED_STANDBY_HOST: {{ .Release.Namespace }}-memcache-svc.{{.Release.Namespace}}.svc.cluster.local
+  RABBITMQ_ADDRESS: {{ .Release.Namespace }}-rabbitmq-svc.{{.Release.Namespace}}.svc.cluster.local

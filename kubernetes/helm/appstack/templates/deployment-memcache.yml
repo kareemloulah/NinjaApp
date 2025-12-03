@@ -5,7 +5,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-memcache
+  name: {{ .Release.Namespace }}-memcache
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-memcache-svc
+  name: {{ .Release.Namespace }}-memcache-svc
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
