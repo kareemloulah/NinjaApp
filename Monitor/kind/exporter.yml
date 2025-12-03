@@ -1,0 +1,62 @@
+# -------------------------------
+# Prometheus
+# -------------------------------
+apiVersion: apps/v1
+kind: DaemonSet     # daemonset  1 for each node
+metadata:
+  name: exporter-dep
+  namespace: monitor
+spec:
+  selector:
+    matchLabels:
+      app: exporter-dep-pod
+  template:
+    metadata:
+      labels:
+        app: exporter-dep-pod
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      hostNetwork: true  # allow access to host network
+      hostPID: true  # allow access to host process IDs 
+      containers:
+        - name: exporter
+          image: prom/node-exporter:v1.10.2
+          ports:
+            - containerPort: 9100
+          resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+          volumeMounts:
+            - name: host
+              mountPath: /host
+              readOnly: true
+      volumes:
+        - name: host
+          hostPath:
+            path: /
+            type: Directory
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: exporter-svc
+  namespace: monitor
+spec:
+  type: ClusterIP
+  selector:
+    app: exporter-dep-pod
+  ports:
+    - port: 9100
+      targetPort: 9100
