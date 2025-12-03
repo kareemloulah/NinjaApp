@@ -64,9 +64,6 @@ spec:
     storage: 2Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  hostPath:
-    path: /mnt/data/grafana
 
 ---
 
