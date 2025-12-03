@@ -8,7 +8,7 @@ metadata:
   name: {{ .Release.Namespace }}-memcache
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: memcache-dep-pod

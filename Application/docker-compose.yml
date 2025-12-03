@@ -19,7 +19,7 @@ services:
     networks:
       app-network:
   memcache-svc:
-    image: memcached:trixie    
+    image: memcached:trixie
     networks:
       app-network:
 

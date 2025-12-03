@@ -47,18 +47,6 @@ spec:
               value: "accounts"
           ports:
             - containerPort: 3306
-  #         volumeMounts:
-  #           - name: mysql-data
-  #             mountPath: /var/lib/mysql
-  # volumeClaimTemplates:
-  #   - metadata:
-  #       name: mysql-data
-  #     spec:
-  #       storageClassName: fast-ssd
-  #       accessModes: ["ReadWriteOnce"]
-  #       resources:
-  #         requests:
-  #           storage: 3Gi
 
 ---
 
