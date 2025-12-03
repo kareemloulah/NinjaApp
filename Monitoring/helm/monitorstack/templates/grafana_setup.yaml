@@ -45,12 +45,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ggrafanaf-pvc
+  name: grafana-pvc
   namespace: {{.Release.Namespace}}
 spec:
+  storageClassName: fast-ssd
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
   resources:
     requests:
       storage: 2Gi

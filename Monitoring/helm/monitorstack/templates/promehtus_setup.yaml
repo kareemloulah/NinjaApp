@@ -15,18 +15,14 @@ data:
         metrics_path: /metrics   # PrometheusMetrics exposes metrics here by default
         static_configs:
           - targets: ["localhost:9090"]   # replace with your Flask host:port
-      - job_name: "exporter-1"
-        metrics_path: /metrics   # PrometheusMetrics exposes metrics here by default
+      - job_name: 'kube-apiserver'
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
         static_configs:
-          - targets: ["{{ .Release.Name }}-exporter-svc:9100"]   # replace with your Flask host:port
-      - job_name: "exporter-2"
-        metrics_path: /metrics   # PrometheusMetrics exposes metrics here by default
-        static_configs:
-          - targets: ["{{ .Release.Name }}-exporter-svc:9100"]   # replace with your Flask host:port
-      - job_name: "exporter-3"
-        metrics_path: /metrics   # PrometheusMetrics exposes metrics here by default
-        static_configs:
-          - targets: ["{{ .Release.Name }}-exporter-svc:9100"]   # replace with your Flask host:port
+          - targets:
+              - "kubernetes.default.svc:443"
 
 ---
 
@@ -48,6 +44,7 @@ spec:
       labels:
         app: prometheus-dep-pod
     spec:
+      serviceAccountName: prometheus
       containers:
         - name: prometheus
           image: {{ .Values.images.prom.name }}:{{ .Values.images.prom.tag }} # prom/prometheus:v3.5.0
@@ -82,9 +79,9 @@ metadata:
   name: prometheus-pvc
   namespace: {{.Release.Namespace}}
 spec:
+  storageClassName: fast-ssd
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
   resources:
     requests:
       storage: 2Gi
@@ -103,3 +100,44 @@ spec:
     - port: 9090
       targetPort: 9090
       nodePort: 32001
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - nodes/metrics
+      - services
+      - endpoints
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+
+  - nonResourceURLs:
+      - /metrics
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus
+subjects:
+  - kind: ServiceAccount
+    name: prometheus
+    namespace: {{ .Release.Namespace }}
