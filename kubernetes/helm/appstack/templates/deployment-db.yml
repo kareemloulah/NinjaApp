@@ -45,13 +45,6 @@ spec:
               value: "admin123"
             - name: MYSQL_DATABASE
               value: "accounts"
-          resources:
-              requests:
-                memory: "1Gi"
-                cpu: "1000m"
-              limits:
-                memory: "2Gi"
-                cpu: "1500m"
           ports:
             - containerPort: 3306
   #         volumeMounts:
@@ -87,13 +80,6 @@ spec:
         volumeMounts:
         - name: seed-files
           mountPath: /seeds
-        resources:
-            requests:
-              memory: "1Gi"
-              cpu: "1000m"
-            limits:
-              memory: "2Gi"
-              cpu: "1500m"
       volumes:
       - name: seed-files
         configMap:
